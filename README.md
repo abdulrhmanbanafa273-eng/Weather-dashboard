@@ -58,7 +58,14 @@ python run.py
 Then open http://127.0.0.1:5000 in your browser.
 
 ## API
-Documented once the provider is chosen in Week 2.
+This project uses [OpenWeatherMap](https://openweathermap.org/api):
+- **Current Weather Data** (`/data/2.5/weather`) — temperature, feels-like, condition,
+  icon, humidity, wind, pressure, visibility, sunrise/sunset, all in one response
+- **5 Day / 3 Hour Forecast** (`/data/2.5/forecast`) — grouped into daily cards by the
+  backend, since the API itself only returns 3-hour intervals
+
+Chosen because its free tier requires no credit card, covers nearly every field this
+app needs from a single request, and is one of the most widely used weather APIs.
 
 ## Testing
 No automated tests yet — added in Week 4.

@@ -9,7 +9,37 @@
 <body>
     <main class="page">
         <h1>Weather Dashboard</h1>
-        <p>Project scaffolding is up and running. Search functionality is coming soon.</p>
+
+        <form id="search-form" class="search-form">
+            <input
+                type="text"
+                id="city-input"
+                placeholder="Search for a city..."
+                autocomplete="off"
+                required
+            >
+            <button type="submit">Search</button>
+        </form>
+
+        <p id="loading-message" class="loading-message hidden">Loading weather data...</p>
+        <p id="error-message" class="error-message hidden"></p>
+
+        <section id="weather-result" class="weather-card hidden">
+            <h2 id="location"></h2>
+            <p id="local-time"></p>
+            <img id="weather-icon" class="weather-icon" src="" alt="">
+            <p id="temperature" class="temperature"></p>
+            <p id="feels-like"></p>
+            <p id="condition"></p>
+            <p id="humidity"></p>
+            <p id="wind"></p>
+            <p id="pressure"></p>
+            <p id="visibility"></p>
+            <p id="sunrise"></p>
+            <p id="sunset"></p>
+        </section>
     </main>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
