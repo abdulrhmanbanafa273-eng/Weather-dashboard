@@ -1,5 +1,7 @@
 const form = document.getElementById("search-form");
 const cityInput = document.getElementById("city-input");
+const searchButton = form.querySelector("button");
+const loadingMessage = document.getElementById("loading-message");
 const errorMessage = document.getElementById("error-message");
 const weatherResult = document.getElementById("weather-result");
 
@@ -15,6 +17,8 @@ form.addEventListener("submit", (event) => {
 async function fetchWeather(city) {
     hide(errorMessage);
     hide(weatherResult);
+    show(loadingMessage);
+    searchButton.disabled = true;
 
     try {
         const response = await fetch(`/api/weather?city=${encodeURIComponent(city)}`);
@@ -28,6 +32,9 @@ async function fetchWeather(city) {
         renderWeather(data);
     } catch (error) {
         showError("Could not reach the server. Check your connection and try again.");
+    } finally {
+        hide(loadingMessage);
+        searchButton.disabled = false;
     }
 }
 

@@ -54,6 +54,16 @@ body {
     background-color: #1d4ed8;
 }
 
+.loading-message {
+    color: #4b5563;
+    margin-bottom: 16px;
+}
+
+.search-form button:disabled {
+    background-color: #93b4f5;
+    cursor: not-allowed;
+}
+
 .error-message {
     color: #b91c1c;
     background-color: #fee2e2;
