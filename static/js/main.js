@@ -71,15 +71,15 @@ function renderWeather(data) {
     document.getElementById("temperature").textContent = `${Math.round(data.temperature)}°C`;
     document.getElementById("feels-like").textContent = `Feels like ${Math.round(data.feels_like)}°C`;
     document.getElementById("condition").textContent = data.condition;
-    document.getElementById("humidity").textContent = `Humidity: ${data.humidity}%`;
-    document.getElementById("wind").textContent = `Wind: ${data.wind_speed} m/s`;
-    document.getElementById("pressure").textContent = `Pressure: ${data.pressure} hPa`;
+    document.getElementById("humidity").textContent = `${data.humidity}%`;
+    document.getElementById("wind").textContent = `${data.wind_speed} m/s`;
+    document.getElementById("pressure").textContent = `${data.pressure} hPa`;
 
-    const visibilityKm = data.visibility != null ? (data.visibility / 1000).toFixed(1) : "N/A";
-    document.getElementById("visibility").textContent = `Visibility: ${visibilityKm} km`;
+    const visibilityKm = data.visibility != null ? `${(data.visibility / 1000).toFixed(1)} km` : "N/A";
+    document.getElementById("visibility").textContent = visibilityKm;
 
-    document.getElementById("sunrise").textContent = `Sunrise: ${data.sunrise}`;
-    document.getElementById("sunset").textContent = `Sunset: ${data.sunset}`;
+    document.getElementById("sunrise").textContent = data.sunrise;
+    document.getElementById("sunset").textContent = data.sunset;
 
     show(weatherResult);
 }

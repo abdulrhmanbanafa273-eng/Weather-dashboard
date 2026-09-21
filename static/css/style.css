@@ -11,10 +11,10 @@ body {
 }
 
 .page {
-    max-width: 500px;
-    margin: 60px auto;
+    max-width: 720px;
+    margin: 40px auto;
     text-align: center;
-    padding: 0 20px;
+    padding: 0 16px;
 }
 
 .page h1 {
@@ -23,7 +23,7 @@ body {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 .search-form {
@@ -73,16 +73,39 @@ body {
 }
 
 .weather-card {
+    display: grid;
+    gap: 20px;
     background-color: #fff;
     border-radius: 12px;
     padding: 24px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    text-align: left;
 }
 
 .weather-card h2 {
-    text-align: center;
     margin-bottom: 4px;
+}
+
+.weather-details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    align-content: center;
+}
+
+.detail {
+    background-color: #f4f6f8;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.detail dt {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.detail dd {
+    font-size: 1.05rem;
+    font-weight: 600;
 }
 
 .weather-icon {
@@ -111,12 +134,12 @@ body {
 }
 
 .forecast-cards {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     gap: 8px;
 }
 
 .forecast-card {
-    flex: 1;
     background-color: #fff;
     border-radius: 10px;
     padding: 12px 4px;
@@ -135,4 +158,40 @@ body {
 .forecast-temps {
     font-size: 0.85rem;
     color: #4b5563;
+}
+
+/* Tablet and up: summary on the left, detail tiles on the right */
+@media (min-width: 640px) {
+    .weather-card {
+        grid-template-columns: 1fr 1.3fr;
+        align-items: center;
+    }
+}
+
+/* Phones: tighter spacing so five forecast cards still fit */
+@media (max-width: 480px) {
+    .page {
+        margin: 24px auto;
+    }
+
+    .page h1 {
+        font-size: 1.6rem;
+    }
+
+    .weather-card {
+        padding: 16px;
+    }
+
+    .forecast-cards {
+        gap: 6px;
+    }
+
+    .forecast-card img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .forecast-temps {
+        font-size: 0.75rem;
+    }
 }
