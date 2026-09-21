@@ -24,19 +24,29 @@
         <p id="loading-message" class="loading-message hidden">Loading weather data...</p>
         <p id="error-message" class="error-message hidden"></p>
 
+        <section id="empty-state" class="empty-state">
+            <p class="empty-state-title">Search for a city to see its weather</p>
+            <p>Try Dubai, London or Tokyo.</p>
+        </section>
+
         <section id="weather-result" class="weather-card hidden">
-            <h2 id="location"></h2>
-            <p id="local-time"></p>
-            <img id="weather-icon" class="weather-icon" src="" alt="">
-            <p id="temperature" class="temperature"></p>
-            <p id="feels-like"></p>
-            <p id="condition"></p>
-            <p id="humidity"></p>
-            <p id="wind"></p>
-            <p id="pressure"></p>
-            <p id="visibility"></p>
-            <p id="sunrise"></p>
-            <p id="sunset"></p>
+            <div class="weather-summary">
+                <h2 id="location"></h2>
+                <p id="local-time"></p>
+                <img id="weather-icon" class="weather-icon" src="" alt="">
+                <p id="temperature" class="temperature"></p>
+                <p id="feels-like"></p>
+                <p id="condition"></p>
+            </div>
+
+            <dl class="weather-details">
+                <div class="detail"><dt>Humidity</dt><dd id="humidity"></dd></div>
+                <div class="detail"><dt>Wind</dt><dd id="wind"></dd></div>
+                <div class="detail"><dt>Pressure</dt><dd id="pressure"></dd></div>
+                <div class="detail"><dt>Visibility</dt><dd id="visibility"></dd></div>
+                <div class="detail"><dt>Sunrise</dt><dd id="sunrise"></dd></div>
+                <div class="detail"><dt>Sunset</dt><dd id="sunset"></dd></div>
+            </dl>
         </section>
 
         <section id="forecast" class="forecast hidden">
