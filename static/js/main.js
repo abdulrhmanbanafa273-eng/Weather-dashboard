@@ -3,6 +3,7 @@ const cityInput = document.getElementById("city-input");
 const searchButton = form.querySelector("button");
 const loadingMessage = document.getElementById("loading-message");
 const errorMessage = document.getElementById("error-message");
+const emptyState = document.getElementById("empty-state");
 const weatherResult = document.getElementById("weather-result");
 const forecastSection = document.getElementById("forecast");
 const forecastCards = document.getElementById("forecast-cards");
@@ -17,6 +18,7 @@ form.addEventListener("submit", (event) => {
 });
 
 async function fetchWeather(city) {
+    hide(emptyState);
     hide(errorMessage);
     hide(weatherResult);
     hide(forecastSection);
