@@ -4,6 +4,8 @@ const searchButton = form.querySelector("button");
 const loadingMessage = document.getElementById("loading-message");
 const errorMessage = document.getElementById("error-message");
 const weatherResult = document.getElementById("weather-result");
+const forecastSection = document.getElementById("forecast");
+const forecastCards = document.getElementById("forecast-cards");
 
 form.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -17,25 +19,45 @@ form.addEventListener("submit", (event) => {
 async function fetchWeather(city) {
     hide(errorMessage);
     hide(weatherResult);
+    hide(forecastSection);
     show(loadingMessage);
     searchButton.disabled = true;
 
+    const query = encodeURIComponent(city);
+
     try {
-        const response = await fetch(`/api/weather?city=${encodeURIComponent(city)}`);
-        const data = await response.json();
+        const [weather, forecast] = await Promise.all([
+            getJson(`/api/weather?city=${query}`),
+            getJson(`/api/forecast?city=${query}`),
+        ]);
 
-        if (!response.ok) {
-            showError(data.error || "Something went wrong. Please try again.");
-            return;
-        }
-
-        renderWeather(data);
+        renderWeather(weather);
+        renderForecast(forecast);
     } catch (error) {
-        showError("Could not reach the server. Check your connection and try again.");
+        showError(error.message);
     } finally {
         hide(loadingMessage);
         searchButton.disabled = false;
     }
+}
+
+async function getJson(url) {
+    let response;
+    try {
+        response = await fetch(url);
+    } catch (error) {
+        throw new Error("Could not reach the server. Check your connection and try again.");
+    }
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error || "Something went wrong. Please try again.");
+    }
+    return data;
+}
+
+function iconUrl(iconCode) {
+    return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
 }
 
 function renderWeather(data) {
@@ -43,7 +65,7 @@ function renderWeather(data) {
     document.getElementById("local-time").textContent = `Local time: ${data.local_time}`;
 
     const icon = document.getElementById("weather-icon");
-    icon.src = `https://openweathermap.org/img/wn/${data.icon}@2x.png`;
+    icon.src = iconUrl(data.icon);
     icon.alt = data.condition;
 
     document.getElementById("temperature").textContent = `${Math.round(data.temperature)}°C`;
@@ -60,6 +82,32 @@ function renderWeather(data) {
     document.getElementById("sunset").textContent = `Sunset: ${data.sunset}`;
 
     show(weatherResult);
+}
+
+function renderForecast(days) {
+    const cards = days.map((day, index) => createForecastCard(day, index === 0));
+    forecastCards.replaceChildren(...cards);
+    show(forecastSection);
+}
+
+function createForecastCard(day, isToday) {
+    const card = document.createElement("div");
+    card.className = "forecast-card";
+
+    const dayName = document.createElement("p");
+    dayName.className = "forecast-day";
+    dayName.textContent = isToday ? "Today" : day.day_name;
+
+    const icon = document.createElement("img");
+    icon.src = iconUrl(day.icon);
+    icon.alt = day.condition;
+
+    const temperatures = document.createElement("p");
+    temperatures.className = "forecast-temps";
+    temperatures.textContent = `${Math.round(day.temp_max)}° / ${Math.round(day.temp_min)}°`;
+
+    card.append(dayName, icon, temperatures);
+    return card;
 }
 
 function showError(message) {

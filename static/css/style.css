@@ -100,3 +100,39 @@ body {
 .weather-card p {
     margin: 4px 0;
 }
+
+.forecast {
+    margin-top: 24px;
+}
+
+.forecast h2 {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+}
+
+.forecast-cards {
+    display: flex;
+    gap: 8px;
+}
+
+.forecast-card {
+    flex: 1;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 12px 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.forecast-card img {
+    width: 48px;
+    height: 48px;
+}
+
+.forecast-day {
+    font-weight: 600;
+}
+
+.forecast-temps {
+    font-size: 0.85rem;
+    color: #4b5563;
+}
