@@ -42,8 +42,10 @@ def _fetch_from_api(endpoint, city, units):
             params={"q": city, "appid": api_key, "units": units},
             timeout=REQUEST_TIMEOUT_SECONDS,
         )
+    except requests.exceptions.Timeout as error:
+        raise WeatherAPIError("The weather service took too long to respond. Please try again.") from error
     except requests.exceptions.RequestException as error:
-        raise WeatherAPIError(f"Could not reach the weather service: {error}") from error
+        raise WeatherAPIError("Could not reach the weather service. Please try again later.") from error
 
     if response.status_code == 404:
         raise CityNotFoundError(f'City "{city}" was not found.')
