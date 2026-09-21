@@ -7,6 +7,19 @@ const emptyState = document.getElementById("empty-state");
 const weatherResult = document.getElementById("weather-result");
 const forecastSection = document.getElementById("forecast");
 const forecastCards = document.getElementById("forecast-cards");
+const unitButtons = document.querySelectorAll(".unit-toggle button");
+
+// The backend always returns Celsius; we convert in the browser so switching
+// units doesn't need another API call.
+let currentUnit = localStorage.getItem("unit") === "fahrenheit" ? "fahrenheit" : "celsius";
+let lastWeather = null;
+let lastForecast = null;
+
+updateUnitButtons();
+
+unitButtons.forEach((button) => {
+    button.addEventListener("click", () => setUnit(button.dataset.unit));
+});
 
 form.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -33,6 +46,8 @@ async function fetchWeather(city) {
             getJson(`/api/forecast?city=${query}`),
         ]);
 
+        lastWeather = weather;
+        lastForecast = forecast;
         renderWeather(weather);
         renderForecast(forecast);
     } catch (error) {
@@ -58,6 +73,35 @@ async function getJson(url) {
     return data;
 }
 
+function setUnit(unit) {
+    currentUnit = unit;
+    localStorage.setItem("unit", unit);
+    updateUnitButtons();
+
+    if (lastWeather) {
+        renderWeather(lastWeather);
+        renderForecast(lastForecast);
+    }
+}
+
+function updateUnitButtons() {
+    unitButtons.forEach((button) => {
+        const isActive = button.dataset.unit === currentUnit;
+        button.classList.toggle("active", isActive);
+        button.setAttribute("aria-pressed", String(isActive));
+    });
+}
+
+function convertTemperature(celsius) {
+    const value = currentUnit === "fahrenheit" ? (celsius * 9) / 5 + 32 : celsius;
+    return Math.round(value);
+}
+
+function formatTemperature(celsius) {
+    const symbol = currentUnit === "fahrenheit" ? "°F" : "°C";
+    return `${convertTemperature(celsius)}${symbol}`;
+}
+
 function iconUrl(iconCode) {
     return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
 }
@@ -70,8 +114,8 @@ function renderWeather(data) {
     icon.src = iconUrl(data.icon);
     icon.alt = data.condition;
 
-    document.getElementById("temperature").textContent = `${Math.round(data.temperature)}°C`;
-    document.getElementById("feels-like").textContent = `Feels like ${Math.round(data.feels_like)}°C`;
+    document.getElementById("temperature").textContent = formatTemperature(data.temperature);
+    document.getElementById("feels-like").textContent = `Feels like ${formatTemperature(data.feels_like)}`;
     document.getElementById("condition").textContent = data.condition;
     document.getElementById("humidity").textContent = `${data.humidity}%`;
     document.getElementById("wind").textContent = `${data.wind_speed} m/s`;
@@ -106,7 +150,7 @@ function createForecastCard(day, isToday) {
 
     const temperatures = document.createElement("p");
     temperatures.className = "forecast-temps";
-    temperatures.textContent = `${Math.round(day.temp_max)}° / ${Math.round(day.temp_min)}°`;
+    temperatures.textContent = `${convertTemperature(day.temp_max)}° / ${convertTemperature(day.temp_min)}°`;
 
     card.append(dayName, icon, temperatures);
     return card;

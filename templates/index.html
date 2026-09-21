@@ -30,6 +30,11 @@
         </section>
 
         <section id="weather-result" class="weather-card hidden">
+            <div class="unit-toggle" role="group" aria-label="Temperature unit">
+                <button type="button" data-unit="celsius" aria-pressed="true">&deg;C</button>
+                <button type="button" data-unit="fahrenheit" aria-pressed="false">&deg;F</button>
+            </div>
+
             <div class="weather-summary">
                 <h2 id="location"></h2>
                 <p id="local-time"></p>
