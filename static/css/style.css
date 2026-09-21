@@ -85,6 +85,29 @@ body {
     margin-bottom: 4px;
 }
 
+.unit-toggle {
+    display: flex;
+    justify-content: flex-end;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.unit-toggle button {
+    padding: 4px 12px;
+    font-size: 0.85rem;
+    border: 1px solid #ccd2d9;
+    border-radius: 999px;
+    background-color: #fff;
+    color: #4b5563;
+    cursor: pointer;
+}
+
+.unit-toggle button.active {
+    background-color: #2563eb;
+    border-color: #2563eb;
+    color: #fff;
+}
+
 .weather-icon {
     display: block;
     margin: 0 auto;

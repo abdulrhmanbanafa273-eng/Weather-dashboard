@@ -25,6 +25,11 @@
         <p id="error-message" class="error-message hidden"></p>
 
         <section id="weather-result" class="weather-card hidden">
+            <div class="unit-toggle" role="group" aria-label="Temperature unit">
+                <button type="button" data-unit="celsius" aria-pressed="true">&deg;C</button>
+                <button type="button" data-unit="fahrenheit" aria-pressed="false">&deg;F</button>
+            </div>
+
             <h2 id="location"></h2>
             <p id="local-time"></p>
             <img id="weather-icon" class="weather-icon" src="" alt="">
