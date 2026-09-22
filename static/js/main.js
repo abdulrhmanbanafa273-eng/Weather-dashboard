@@ -8,6 +8,11 @@ const weatherResult = document.getElementById("weather-result");
 const forecastSection = document.getElementById("forecast");
 const forecastCards = document.getElementById("forecast-cards");
 const unitButtons = document.querySelectorAll(".unit-toggle button");
+const recentSection = document.getElementById("recent-searches");
+const recentList = document.getElementById("recent-list");
+
+const RECENT_SEARCHES_KEY = "recentSearches";
+const MAX_RECENT_SEARCHES = 5;
 
 // The backend always returns Celsius; we convert in the browser so switching
 // units doesn't need another API call.
@@ -16,9 +21,15 @@ let lastWeather = null;
 let lastForecast = null;
 
 updateUnitButtons();
+renderRecentSearches();
 
 unitButtons.forEach((button) => {
     button.addEventListener("click", () => setUnit(button.dataset.unit));
+});
+
+document.getElementById("clear-recent").addEventListener("click", () => {
+    localStorage.removeItem(RECENT_SEARCHES_KEY);
+    renderRecentSearches();
 });
 
 form.addEventListener("submit", (event) => {
@@ -50,6 +61,7 @@ async function fetchWeather(city) {
         lastForecast = forecast;
         renderWeather(weather);
         renderForecast(forecast);
+        saveRecentSearch(weather.city);
     } catch (error) {
         showError(error.message);
     } finally {
@@ -71,6 +83,43 @@ async function getJson(url) {
         throw new Error(data.error || "Something went wrong. Please try again.");
     }
     return data;
+}
+
+function loadRecentSearches() {
+    try {
+        const saved = JSON.parse(localStorage.getItem(RECENT_SEARCHES_KEY));
+        return Array.isArray(saved) ? saved.filter((city) => typeof city === "string") : [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function saveRecentSearch(city) {
+    const others = loadRecentSearches().filter((saved) => saved.toLowerCase() !== city.toLowerCase());
+    const updated = [city, ...others].slice(0, MAX_RECENT_SEARCHES);
+    localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
+    renderRecentSearches();
+}
+
+function renderRecentSearches() {
+    const cities = loadRecentSearches();
+
+    const items = cities.map((city) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = city;
+        button.addEventListener("click", () => {
+            cityInput.value = city;
+            fetchWeather(city);
+        });
+
+        const item = document.createElement("li");
+        item.append(button);
+        return item;
+    });
+
+    recentList.replaceChildren(...items);
+    recentSection.classList.toggle("hidden", cities.length === 0);
 }
 
 function setUnit(unit) {
