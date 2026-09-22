@@ -11,6 +11,7 @@
         <h1>Weather Dashboard</h1>
 
         <form id="search-form" class="search-form">
+            <label for="city-input" class="visually-hidden">City name</label>
             <input
                 type="text"
                 id="city-input"
@@ -27,8 +28,8 @@
             <button type="button" id="clear-recent" class="clear-recent">Clear</button>
         </section>
 
-        <p id="loading-message" class="loading-message hidden">Loading weather data...</p>
-        <p id="error-message" class="error-message hidden"></p>
+        <p id="loading-message" class="loading-message hidden" role="status">Loading weather data...</p>
+        <p id="error-message" class="error-message hidden" role="alert"></p>
 
         <section id="empty-state" class="empty-state">
             <p class="empty-state-title">Search for a city to see its weather</p>
